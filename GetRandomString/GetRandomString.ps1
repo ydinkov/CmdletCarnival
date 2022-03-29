@@ -92,7 +92,9 @@ function Get-Random-String {
     }
 
     # Remove Excluded characters
-    foreach ($Char in $ExcludeCharacters.toCharArray()) { $Pool= $Pool.Replace($Char,"")}
+    foreach ($Char in $ExcludeCharacters.toCharArray()) {
+       $Pool = $Pool -replace '['+$Char+']',''
+    }
     if($Pool -eq ""){
         throw "No Characters allowed. All available characters were excluded by user."
     }
