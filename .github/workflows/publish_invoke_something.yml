@@ -1,0 +1,21 @@
+name: Public Invoke-Something
+
+on:
+  push:
+    paths:
+      - 'InkoveSomething/**'
+    branches: [ master ]  
+  workflow_dispatch:
+    
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Publish to nuget
+      run: Publish-Module -Path "./InvokeSomething" -NuGetApiKey ${{ secrets.NUGET_API_KEY }} -ReleaseNote ${{github.event.head_commit.message}} -Repository "Invoke-Something" -ProjectUri "https://github.com/ydinkov/CmdletCarnival" -IconUri InvokeSomething/logo.png -LicenseUri LICENSE.md
+      shell: powershell
