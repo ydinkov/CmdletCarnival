@@ -16,6 +16,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Register Repository
+      run: Register-PSRepository -Name Invoke-Something -SourceLocation "InvokeSomething"
+      shell: powershell
+      
     - name: Publish to nuget
       run: Publish-Module -Path "./InvokeSomething" -NuGetApiKey ${{ secrets.NUGET_API_KEY }} -Repository "Invoke-Something" -ProjectUri "https://github.com/ydinkov/CmdletCarnival" -IconUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/InvokeSomething/logo.png" -LicenseUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/LICENSE.md"
       shell: powershell
