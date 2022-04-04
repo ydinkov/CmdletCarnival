@@ -17,5 +17,5 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Publish to nuget
-      run: Publish-Module -Path "./InvokeSomething" -NuGetApiKey ${{ secrets.NUGET_API_KEY }} -ReleaseNote ${{github.event.head_commit.message}} -Repository "Invoke-Something" -ProjectUri "https://github.com/ydinkov/CmdletCarnival" -IconUri InvokeSomething/logo.png -LicenseUri LICENSE.md
+      run: Publish-Module -Path "./InvokeSomething" -NuGetApiKey ${{ secrets.NUGET_API_KEY }} -ReleaseNote ${{github.event.head_commit.message}} -Repository "Invoke-Something" -ProjectUri "https://github.com/ydinkov/CmdletCarnival" -IconUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/InvokeSomething/logo.png" -LicenseUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/LICENSE.md"
       shell: powershell
