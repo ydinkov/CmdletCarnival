@@ -2,46 +2,35 @@ function Get-Random-String {
     <#    
     .SYNOPSIS
     Generates a random string with an array of customisations
-    #>
 
-    <#    
     .DESCRIPTION
     This cmdlet generates a random string based on user customisation.
-    #>
 
-  [CmdletBinding()]
-  [Alias('rndmstr')]
-  param(
-    <#    
     .EXAMPLE
     rndmstr 32 
     ukmshszqvkwhivrevecpsrnqnvpjuvpkt
-    #>
 
-    <#    
     .EXAMPLE
     rndmstr 32 -UseUpperCase
     LSlBajOMOAsyCeHipDWOiblIbiOrGSkfu
-    #>
-    <#    
+
     .EXAMPLE
     rndmstr 32 -UseUpperCase -UseNumbers
     FYyU7bIUoFKJr3975ZAJc8jeCnVhjlZqT
-    #>
 
-    <#    
     .EXAMPLE
     rndmstr 32 -UseUpperCase -UseLoweCase:$false
     ARKDMQJFILYWYTAZNSRQOUFYLFTMIZEWV
-    #>
 
-    <#    
     .EXAMPLE
     rndmstr 32 -UseUpperCase -UseNumbers -UseSpecialCharacters
     bFNC1D1K*ng37neaYYpT0J985+ZCaC47h
     #>
-         
-    
+
+
+  [CmdletBinding()]
+  [Alias('rndmstr')]
+  param( 
 
     [Parameter(        
         Mandatory=$true,
