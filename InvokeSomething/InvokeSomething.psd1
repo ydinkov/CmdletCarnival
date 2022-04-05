@@ -12,7 +12,7 @@
 RootModule = 'InvokeSomething.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.3'
+ModuleVersion = '0.1.4'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -36,7 +36,7 @@ Description = 'This cmdlet lets the user very simply define a donothing script t
 PowerShellVersion = '5.1'
 
 # Name of the Windows PowerShell host required by this module
-PowerShellHostName = 'ConsoleHost'
+# PowerShellHostName = 'ConsoleHost'
 
 # Minimum version of the Windows PowerShell host required by this module
 PowerShellHostVersion = '5.1'
