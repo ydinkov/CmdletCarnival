@@ -3,7 +3,7 @@ name: Public Invoke-Something
 on:
   push:
     paths:
-      - 'InkoveSomething/**'
+      - 'InokeSomething/**'
     branches: [ master ]  
   workflow_dispatch:
     
@@ -15,10 +15,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    #- name: Register Repository
-    #  run: Register-PSRepository -Name Invoke-Something -SourceLocation "InvokeSomething"
-    #  shell: powershell
       
     - name: Publish to nuget
       run: Publish-Module -Path "./InvokeSomething/" -NuGetApiKey ${{ secrets.PSGALLERY_API_KEY }}  -ProjectUri "https://github.com/ydinkov/CmdletCarnival" -IconUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/InvokeSomething/logo.png" -LicenseUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/LICENSE.md"
