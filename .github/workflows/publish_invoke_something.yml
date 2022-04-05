@@ -3,7 +3,7 @@ name: Public Invoke-Something
 on:
   push:
     paths:
-      - 'InokeSomething/**'
+      - 'InvokeSomething/**'
     branches: [ master ]  
   workflow_dispatch:
     
