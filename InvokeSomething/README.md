@@ -1,6 +1,14 @@
 # InvokeSomething ![](logo.png)
 This cmdlet lets the user very simply define a donothing script inspired by [Dan Slimmon's blog post](https://blog.danslimmon.com/2019/07/15/do-nothing-scripting-the-key-to-gradual-automation/).
 
+## Installation
+
+Download it from [Powershell Gallery](https://www.powershellgallery.com/packages/InvokeSomething/)
+or  run:
+```ps1
+Install-Module -Name InvokeSomething -RequiredVersion 0.1.0
+```
+
 ## Prompts
 The cmdlet lets a user create a single step in a donothing script. This step will simply prompt the user to take the described action and to confirm that it has been executed successfully.
 
