@@ -75,7 +75,10 @@ function Invoke-Something {
         [switch] $ContinueOnFailure,
 
         [Parameter(HelpMessage="If the evaluation fails, then re-execute the action instead of only retrying the evaluation")]
-        [switch] $RetryAction    
+        [switch] $RetryAction,    
+        
+        [Parameter(HelpMessage="If disabled, will not clear the screen after this step. Default: true")]
+        [switch] $Clear=$true
     )
     # Determine type
     $Type = if($null -eq $Expression){"*AUTOMATED*"}else {"*MANUAL*"}
@@ -121,4 +124,5 @@ function Invoke-Something {
         Write-Host "User aborted script... 💀"  -ForegroundColor Red
         exit
     }
+    Clear-Host
 }
