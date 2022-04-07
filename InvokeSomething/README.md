@@ -6,7 +6,7 @@ This cmdlet lets the user very simply define a donothing script inspired by [Dan
 Download it from [Powershell Gallery](https://www.powershellgallery.com/packages/InvokeSomething/)
 or  run:
 ```ps1
-Install-Module -Name InvokeSomething -RequiredVersion 0.1.0
+Install-Module -Name InvokeSomething
 ```
 
 ## Prompts
