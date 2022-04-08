@@ -81,7 +81,7 @@ function Invoke-Something {
         [switch] $Clear=$true
     )
     # Determine type
-    $Type = if($null -eq $Expression){"*AUTOMATED*"}else {"*MANUAL*"}
+    $Type = if(($null -eq $Expression) -or ("" -eq -$Expression)){"*MANUAL*"}else {"*AUTOMATED*"}
     Write-Host "################################################################################################"
     Write-Host $Type -ForeGroundColor Yellow
     Write-Host Message: $Message -BackGroundColor White -ForeGroundColor Black
