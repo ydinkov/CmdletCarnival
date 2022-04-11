@@ -1,4 +1,5 @@
-﻿<#    
+﻿Add-Type -AssemblyName System.Web
+<#    
 .SYNOPSIS
 Retreives a service bus sastoken based on a provided connection string
 #>
@@ -19,7 +20,7 @@ function Get-SasToken{
         $HashBytes = $HMAC.ComputeHash([Text.Encoding]::ASCII.GetBytes($RawSignatureString))
         $SignatureString = [Convert]::ToBase64String($HashBytes)
         $UrlEncodedSignatureString = [System.Web.HttpUtility]::UrlEncode($SignatureString)        
-        return "SharedAccessSignature sig=$UrlEncodedSignatureString&se=$Expiry&skn=$PolicyName&sr=$UrlEncodedEndpoint"
+        return "SharedAccessSignature sig=$UrlEncodedSignatureString&se=$Expiry&skn=$PolicyName&sr=$UrlEncodedEndpoint", $Endpoint.TrimStart("sb://").TrimEnd("/")
 }
 
 function Send-Message
@@ -30,22 +31,24 @@ function Send-Message
         [object]$Body,
         [Parameter(Mandatory=$True)]
         [string]$SASToken,
+        [Parameter(Mandatory=$True,ValuefromPipeline=$True)]
+        [object]$HostPath,
         [string]$QueueName = "",
         [string]$ContentType = "application/json"
     )
    
-    if(ContentType -eq "application/json"){
+    if($ContentType -eq "application/json"){
         $MessageBody = ConvertTo-Json $Body
-    }elseif (ContentType -eq "application/xml") {
+    }elseif ($ContentType -eq "application/xml") {
         $MessageBody = ConvertTo-Xml $Body
-    }elseif (ContentType -eq "application/csv") {
+    }elseif ($ContentType -eq "application/csv") {
         $MessageBody = ConvertTo-Csv $Body
     }else{
         $MessageBody = Out-String -InputObject $Body;
     }
     
     $Params = @{
-        Uri = "https://$($Endpoint.Host)/$($QueueName)/messages"
+        Uri = "https://$($HostPath)/$($QueueName)/messages"
         ContentType = "$($ContentType);charset=utf-8"
         Method = 'Post'
         Body = $MessageBody
@@ -73,8 +76,8 @@ function Send-QueueMessage
         [string]$ContentType = "application/json"
     )   
     
-    $SASToken = Get-SasToken -ConnectionString $ConnectionString -EnityName $QueueName -TokenValidFor $TokenValidFor
-    Send-Message -Body $Body -SASToken $SASToken -QueueName $QueueName -ContentType $ContentType
+    $SASToken, $Endpoint= Get-SasToken -ConnectionString $ConnectionString -EnityName $QueueName -TokenValidFor $TokenValidFor
+    Send-Message -Body $Body -SASToken $SASToken -QueueName $QueueName -ContentType $ContentType -HostPath $Endpoint
 }
 
 
@@ -95,7 +98,7 @@ function Send-QueueMessages
         [int]$TokenValidFor = 3600,
         [double] $Delay = 0.0
     )
-    $SASToken = Get-SasToken -ConnectionString $ConnectionString -EnityName $QueueName -TokenValidFor $TokenValidFor
+    $SASToken, $Endpoint = Get-SasToken -ConnectionString $ConnectionString -EnityName $QueueName -TokenValidFor $TokenValidFor
     $Bodies | ForEach-Object{
         Send-QueueMessage -Body $_ -SASToken $SASToken -QueueName $QueueName -ContentType $ContentType
         if($Delay -gt 0.0){ Start-Sleep -Seconds $Delay}    
