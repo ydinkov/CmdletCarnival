@@ -1,0 +1,21 @@
+name: Publis ServiceBusCommander
+
+on:
+  push:
+    paths:
+      - 'ServiceBusCommander/**'
+    branches: [ master ]  
+  workflow_dispatch:
+    
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Publish to nuget
+      run: Publish-Module -Path "./ServiceBusCommander/" -NuGetApiKey ${{ secrets.PSGALLERY_API_KEY }}  -ProjectUri "https://github.com/ydinkov/CmdletCarnival" -IconUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/ServiceBusCommander/logo.png" -LicenseUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/LICENSE.md"
+      shell: powershell
