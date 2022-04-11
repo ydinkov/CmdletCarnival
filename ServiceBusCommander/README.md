@@ -32,3 +32,22 @@ Import-Csv Customers.csv | ForEach-Object {
 }
 
 ```
+
+
+## Implemented
+
+### Queues:
+- Send-QueueMessage
+- TODO: Peek-QueueMessages
+- TODO: Receive-QueueMessages
+
+### Topics:
+- TODO: Send-TopiceMessage
+- TODO: Peek-TopicMessages
+- TODO: Receive-TopicMessages
+
+### Management
+- Get-SasToken
+- TODO: Create-Queue
+- TODO: Create-Subscription
+- TODO: Create-Topic
