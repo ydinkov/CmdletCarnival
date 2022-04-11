@@ -12,7 +12,7 @@
 RootModule = 'ServiceBusCommander.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '0.1.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -30,7 +30,7 @@ CompanyName = 'Nibbleblog'
 Copyright = '(c) 2022 Yasen Dinkov. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'This cmdlet lets the user very simply define a donothing script that prompts manual actions. The script can then easily be extended to automate certain actions. This module allows for some customisation'
+Description = 'This cmdlet lets the user interact with Azure Service bus namespaces.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '5.1'

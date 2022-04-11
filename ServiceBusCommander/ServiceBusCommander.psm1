@@ -22,32 +22,84 @@ function Get-SasToken{
         return "SharedAccessSignature sig=$UrlEncodedSignatureString&se=$Expiry&skn=$PolicyName&sr=$UrlEncodedEndpoint"
 }
 
+function Send-Message
+{
+    [cmdletbinding()]
+    param(
+        [Parameter(Mandatory=$True,ValuefromPipeline=$True)]
+        [object]$Body,
+        [Parameter(Mandatory=$True)]
+        [string]$SASToken,
+        [string]$QueueName = "",
+        [string]$ContentType = "application/json"
+    )
+   
+    if(ContentType -eq "application/json"){
+        $MessageBody = ConvertTo-Json $Body
+    }elseif (ContentType -eq "application/xml") {
+        $MessageBody = ConvertTo-Xml $Body
+    }elseif (ContentType -eq "application/csv") {
+        $MessageBody = ConvertTo-Csv $Body
+    }else{
+        $MessageBody = Out-String -InputObject $Body;
+    }
+    
+    $Params = @{
+        Uri = "https://$($Endpoint.Host)/$($QueueName)/messages"
+        ContentType = "$($ContentType);charset=utf-8"
+        Method = 'Post'
+        Body = $MessageBody
+        Headers = @{
+            'Authorization' = $SASToken
+        }
+    }
+    Invoke-RestMethod @Params
+}
+
+
 <#    
 .SYNOPSIS
 Sends a message to service bus queue
 #>
 function Send-QueueMessage
 {
+    [cmdletbinding()]
     param(
+        [Parameter(Mandatory=$True,ValuefromPipeline=$True)]
+        [object]$Body,
+        [Parameter(Mandatory=$True)]
         [string]$ConnectionString,
-        [string]$Body,
         [string]$QueueName = "",
-        [string]$ContentType = "application/json",
-        [int]$TokenValidFor = 3600    
-    )
+        [string]$ContentType = "application/json"
+    )   
+    
     $SASToken = Get-SasToken -ConnectionString $ConnectionString -EnityName $QueueName -TokenValidFor $TokenValidFor
-    $Params = @{
-        Uri = "https://$($Endpoint.Host)/$($QueueName)/messages"
-        ContentType = "$($ContentType);charset=utf-8"
-        Method = 'Post'
-        Body = $Body
-        Headers = @{
-            'Authorization' = $SASToken
-        }
-    }
-    Start-Sleep -Seconds 1
-    Invoke-RestMethod @Params
+    Send-Message -Body $Body -SASToken $SASToken -QueueName $QueueName -ContentType $ContentType
 }
 
+
+<#    
+.SYNOPSIS
+Sends many messages to the service bus queue
+#>
+function Send-QueueMessages
+{
+    [cmdletbinding()]
+    param(
+        [Parameter(Mandatory=$True,ValuefromPipeline=$True)]
+        [object[]]$Bodies,
+        [Parameter(Mandatory=$True)]
+        [string]$ConnectionString,
+        [string]$QueueName = "",
+        [string]$ContentType = "application/json",
+        [int]$TokenValidFor = 3600,
+        [double] $Delay = 0.0
+    )
+    $SASToken = Get-SasToken -ConnectionString $ConnectionString -EnityName $QueueName -TokenValidFor $TokenValidFor
+    $Bodies | ForEach-Object{
+        Send-QueueMessage -Body $_ -SASToken $SASToken -QueueName $QueueName -ContentType $ContentType
+        if($Delay -gt 0.0){ Start-Sleep -Seconds $Delay}    
+    }
+}
 
 

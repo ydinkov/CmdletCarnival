@@ -22,14 +22,19 @@ Install-Module -Name ServiceBusCommander
 This commands seds a raw message to a target service bus queue
 
 ```ps1
-#Send single message
-Send-QueueMessage -ConnectionString <servicebus queue connectionString> -ContentType json -Body "{'MessageId':111,'Message':'bar'}"
 
-#Send from csv file
-Import-Csv Customers.csv | ForEach-Object { 
-    $Body = ConvertTo-Json $_
-    Send-QueueMessage -ConnectionString $ConnectionString -Body $Body
-}
+#Send simple plaintext message
+Send-QueueMessage -ConnectionString <ConnectionString> -Body "Hello"
+
+#Send single json Message
+Send-QueueMessage -ConnectionString <ConnectionString> -Body "{'MessageId':111,'Message':'bar'}"  -ContentType 'application/json'
+
+#Send records from csv file as individual json messaegs
+Import-Csv Customers.csv | Send-QueueMessages -ConnectionString <ConnectionString>
+
+#XML variant
+Import-Csv Customers.csv | Send-QueueMessages -ConnectionString <ConnectionString> -ContentType 'application/xml'
+
 
 ```
 
@@ -38,11 +43,13 @@ Import-Csv Customers.csv | ForEach-Object {
 
 ### Queues:
 - Send-QueueMessage
+- Send-QueueMessages
 - TODO: Peek-QueueMessages
 - TODO: Receive-QueueMessages
 
 ### Topics:
 - TODO: Send-TopiceMessage
+- TODO: Send-TopiceMessages
 - TODO: Peek-TopicMessages
 - TODO: Receive-TopicMessages
 
