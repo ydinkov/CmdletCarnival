@@ -18,8 +18,7 @@ function Get-SasToken{
         $HMAC.Key = [Text.Encoding]::ASCII.GetBytes($Key)
         $HashBytes = $HMAC.ComputeHash([Text.Encoding]::ASCII.GetBytes($RawSignatureString))
         $SignatureString = [Convert]::ToBase64String($HashBytes)
-        $UrlEncodedSignatureString = [System.Web.HttpUtility]::UrlEncode($SignatureString)
-        
+        $UrlEncodedSignatureString = [System.Web.HttpUtility]::UrlEncode($SignatureString)        
         return "SharedAccessSignature sig=$UrlEncodedSignatureString&se=$Expiry&skn=$PolicyName&sr=$UrlEncodedEndpoint"
 }
 
@@ -33,12 +32,13 @@ function Send-QueueMessage
         [string]$ConnectionString,
         [string]$Body,
         [string]$QueueName = "",
+        [string]$ContentType = "application/json",
         [int]$TokenValidFor = 3600    
     )
-    $SASToken = Get-SasToken -ConnectionString $ConnectionString -EnityName $QueueName    
+    $SASToken = Get-SasToken -ConnectionString $ConnectionString -EnityName $QueueName -TokenValidFor $TokenValidFor
     $Params = @{
         Uri = "https://$($Endpoint.Host)/$($QueueName)/messages"
-        ContentType = 'application/json;charset=utf-8'
+        ContentType = "$($ContentType);charset=utf-8"
         Method = 'Post'
         Body = $Body
         Headers = @{
