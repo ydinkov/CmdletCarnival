@@ -29,10 +29,10 @@ Send-QueueMessage -ConnectionString <ConnectionString> -Body "Hello"
 #Send single json Message
 Send-QueueMessage -ConnectionString <ConnectionString> -Body "{'MessageId':111,'Message':'bar'}"  -ContentType 'application/json'
 
-#Send records from csv file as individual json messaegs
-Import-Csv Customers.csv | Send-QueueMessages -ConnectionString <ConnectionString>
+#Send records from csv file as individual json messages. Yes, it converts them to json before sending
+Import-Csv Customers.csv | Send-QueueMessages -ConnectionString <ConnectionString>  -ContentType 'application/json'
 
-#XML variant
+#XML variant. Yes, it converts them to xml before sending
 Import-Csv Customers.csv | Send-QueueMessages -ConnectionString <ConnectionString> -ContentType 'application/xml'
 
 
