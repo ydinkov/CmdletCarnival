@@ -20,7 +20,7 @@ function Get-SasToken{
         $HashBytes = $HMAC.ComputeHash([Text.Encoding]::ASCII.GetBytes($RawSignatureString))
         $SignatureString = [Convert]::ToBase64String($HashBytes)
         $UrlEncodedSignatureString = [System.Web.HttpUtility]::UrlEncode($SignatureString)        
-        return "SharedAccessSignature sig=$UrlEncodedSignatureString&se=$Expiry&skn=$PolicyName&sr=$UrlEncodedEndpoint", $Endpoint.TrimStart("sb://").TrimEnd("/")
+        return "SharedAccessSignature sig=$UrlEncodedSignatureString&se=$Expiry&skn=$PolicyName&sr=$UrlEncodedEndpoint", $Endpoint.Host
 }
 
 function Send-Message
