@@ -111,7 +111,7 @@ function Invoke-Something {
                 Start-Sleep -Seconds $Inteval
             }
         }
-        if(($Success -eq $false) -and  $ContinueOnFailure){return}
+        if(($Success -eq $false) -and  $ContinueOnFailure){return $Result}
         else{
             Write-Host "Evaluation failure aborted script... 💀" -BackgroundColor Red -ForegroundColor Black
             exit
