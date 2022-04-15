@@ -1,0 +1,21 @@
+name: Publish ShowMessageBox
+
+on:
+  push:
+    paths:
+      - 'ShowMessageBox/**'
+    branches: [ master ]  
+  workflow_dispatch:
+    
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Publish to nuget
+      run: Publish-Module -Path "./ShowMessageBox/" -NuGetApiKey ${{ secrets.PSGALLERY_API_KEY }}  -ProjectUri "https://github.com/ydinkov/CmdletCarnival" -IconUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/ShowMessageBox/logo.png" -LicenseUri "https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/LICENSE.md"
+      shell: powershell
