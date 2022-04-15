@@ -12,7 +12,7 @@
 RootModule = 'ShowMessageBox.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '0.1.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -104,7 +104,7 @@ PrivateData = @{
         ProjectUri = 'https://github.com/ydinkov/CmdletCarnival'
 
         # A URL to an icon representing this module.
-        IconUri = 'https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/ShowMessageBox/message-box.png'
+        IconUri = 'https://raw.githubusercontent.com/ydinkov/CmdletCarnaval/master/ShowMessageBox/logo.png'
 
         # ReleaseNotes of this module
         # ReleaseNotes = ''
