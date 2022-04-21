@@ -78,13 +78,9 @@ function Invoke-Something {
         [switch] $RetryAction,    
         
         [Parameter(HelpMessage="If disabled, will not clear the screen after this step. Default: true")]
-        [switch] $Clear=$true
+        [switch] $Clear=$false
     )
-    # Determine type
-    $Type = if(($null -eq $Expression) -or ("" -eq -$Expression)){"*MANUAL*"}else {"*AUTOMATED*"}
-    Write-Host "################################################################################################"
-    Write-Host $Type -ForeGroundColor Yellow
-    Write-Host Message: $Message -BackGroundColor White -ForeGroundColor Black
+    Write-Host Message: $Message
     
     # Execute expression if able
     $Result = $null
@@ -111,7 +107,10 @@ function Invoke-Something {
                 Start-Sleep -Seconds $Inteval
             }
         }
-        if(($Success -eq $false) -and  $ContinueOnFailure){return $Result}
+        if(($Success -eq $false) -and  $ContinueOnFailure){
+            if($Clear -eq $true) {Clear-Host}
+            return $Result
+        }
         else{
             Write-Host "Evaluation failure aborted script... 💀" -BackgroundColor Red -ForegroundColor Black
             exit
@@ -119,10 +118,13 @@ function Invoke-Something {
     }
 
     # Continue or abort
-    if ($PSCmdlet.ShouldContinue("Move on to the next step?","")) {return}
+    if ($PSCmdlet.ShouldContinue("Move on to the next step?","")) {
+        if($Clear -eq $true) {Clear-Host}
+        return
+    }
     else{
         Write-Host "User aborted script... 💀"  -ForegroundColor Red
         exit
     }
-    Clear-Host
+    
 }
